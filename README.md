@@ -29,18 +29,20 @@ This covers the following repositories:
     `${GOPATH}/src/github.com/mattermost`. This is necessary for the `go
     list` command to give the right results.
 - Obtain a personal GitHub access token at
-  `https://github.com/settings/tokens` and export it as the
+  https://github.com/settings/tokens and export it as the
   environment variable `$GITHUB_USER_ACCESS_TOKEN`. This token will be
-  used for read-only queries on the GitHub API. It is necessary to
-  avoid rate limits. (if you run the dependency crawler without an
-  access token, it will very quickly hit the API rate limit for
-  anonymous usage).
+  used for read-only queries on the GitHub API, to take advantage of
+  the higher rate limit granted to authorized requests.
+    - If you run this crawler without an access token, it will very quickly hit Github's API rate limit for
+  anonymous usage.
 
 - Create a temporary scratch directory. We’ll call it `$SCRATCH`.
-- Git clone the dependency crawler from git@github.com/coreplane/mattermost-dependency-scanner
-  - **Note: All the following steps will be executed from the root of this repo. **
+- Git clone the dependency crawler from `git@github.com/coreplane/mattermost-dependency-scanner.git`
+
+**Note: All the following steps will be executed from the root of this repo. **
+
 - A local Python interpreter. The crawler has been tested with Python 2.7.10 and 3.7.3.
-  - Use “pip” to install the modules listed in requirements.txt. It is OK to use a virtual environment or a Docker-based Python if you wish.
+  - Use “pip” to install the modules listed in `requirements.txt`. It is OK to use a virtual environment or a Docker-based Python if you wish.
 
 ## Procedure
 
@@ -108,11 +110,12 @@ diff -bruN \
 done
 ```
 
-At the end of this process, your `${SCRATCH}` directory will contain new NOTICE.txt files for each repo, plus diffs showing what changed relative to the current Git masters.
+At the end of this process, your `${SCRATCH}` directory will contain new `NOTICE.txt` files for each repo, plus diffs showing what changed relative to the current Git masters.
 
-Note: if “crawler.py” fails with an error message, it’s usually
-because of a new dependency with incomplete copyright metadata. You
-may need to insert a special-case fix for this. See dependencies.py.
+**Note:** if “crawler.py” fails with an error message, it’s usually
+because of a new dependency with incomplete license or ownership metadata. You
+may need to insert a special-case fix for this. Search for "special
+case" in `Dependencies.py` for example fixes.
 
 3. **Review the diffs manually** for any obvious errors.
 
@@ -135,4 +138,5 @@ done
 
 ## (Optional) Excel output
 
-As a by-product of the above steps, you will also find Excel-format .xlsx files listing the first-order dependencies of each Mattermost repo. These can be assembled by hand into a master .xlsx as need for legal compliance.
+As a by-product of the above steps, you will also find .xlsx files
+containing the NOTICE data in Excel format. These can be assembled by hand into a master .xlsx as needed.
